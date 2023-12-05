@@ -1,7 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
 
 /// <summary>
 /// Takes care of the scoring system.
@@ -9,51 +13,159 @@ using UnityEngine.UI;
 /// </summary>
 public class GameManager : MonoBehaviour
 {
-    static GameManager gm;
-    public static int coins = 0;
-    private static Text coinText;
 
-    public static int normalCoins = 0;
-    public static int redCoins = 0;
+    private static GameManager instance; // Singleton instance
 
+    public static GameManager Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindObjectOfType<GameManager>();
+                if (instance == null)
+                {
+                    GameObject singletonObject = new GameObject("GameManager");
+                    instance = singletonObject.AddComponent<GameManager>();
+                }
+            }
+            return instance;
+        }
+    }
+    
+    public GameObject gameOver;
+    public int coins = 0;
+    public TMP_Text coinText;
+
+    public int life = 6;
+    public Image lifeImage;
+
+    public int oportunities = 3;
+    public TMP_Text oportunitiesText;
+    
     public GameObject starPrefab;
-    public static GameObject star;
+    public GameObject star;
 
+    
     private void Awake()
     {
         star = starPrefab;
     }
 
     private void Start()
-    {
-        //coinText = GameObject.FindGameObjectWithTag("").GetComponent<Text>();
+    { 
         coins = 0;
-        normalCoins = 0;
-        redCoins = 0;
+        life = 8;
+        
+        UpdateCoinsUI();
+        UpdateLifeUI();
+
     }
 
-    public static void AddCoins(int amount)
+    public void AddCoins(int amount)
     {
-        if (amount == 1)
-            normalCoins++;
-        else if (amount == 3)
-            redCoins++;
-
         coins += amount;
-
-        if (coins >= 100)
-            SpawnStar();
+        
+        UpdateCoinsUI();
     }
 
-    public static void RemoveCoins(int amount)
+    public void RemoveCoins(int amount)
     {
         coins -= amount;
 
         if (coins < 0)
             coins = 0;
+        
+        UpdateCoinsUI();
     }
 
-    public static void SpawnStar()
+    public void UpdateCoinsUI()
+    {
+        coinText.SetText(coins.ToString());
+    }
+    
+    public void AddLife(int amount)
+    {
+        
+        life += amount;
+        if (life > 6) life = 6;
+        
+        UpdateLifeUI();
+    }
+
+    public void RemoveLife(int amount)
+    {
+        life -= amount;
+        if (life <= 0)
+        {
+            life = 0;
+            Die();
+        }
+        
+        UpdateLifeUI();
+    }
+    
+    public void FillLife()
+    {
+        life = 8;
+        UpdateLifeUI();
+    }
+
+    public void UpdateLifeUI()
+    {
+        //make lifeimage slice based on life/8 (8 is maxlife)
+        //also make color of lifeimage based on life (8-7 green, 6-5 yellowish green, 4-3 yellow, 1-2 red)
+        
+        // Calculate the fill amount based on the current life
+        float fillAmount = life / 8f; // Assuming max life is 6
+
+        // Update the fill amount of the lifeImage
+        lifeImage.fillAmount = fillAmount;
+
+        // Set color based on life range
+        Color lifeColor;
+        if (life >= 7)
+        {
+            lifeColor = Color.blue;
+        }
+        else if (life >= 5)
+        {
+            lifeColor = Color.green;
+        }
+        else if (life >= 3)
+        {
+            lifeColor = Color.yellow;
+        }
+        else
+        {
+            lifeColor = Color.red;
+        }
+
+        // Apply the color to the lifeImage
+        lifeImage.color = lifeColor;
+    }
+
+    public void RemoveOportunity()
+    {
+        oportunities -= 1;
+        oportunitiesText.SetText(oportunities.ToString());
+        
+    }
+
+    public void Die()
+    {
+        gameOver.SetActive(true);
+        RemoveOportunity();
+        FillLife();
+    }
+
+    public void Restart()
+    {
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.name);
+    }
+
+    public void SpawnStar()
     {
         Transform player = GameObject.FindGameObjectWithTag("Player").transform;
         Vector3 starPos = player.position;
