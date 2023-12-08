@@ -5,44 +5,45 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
-    [SerializeField] private float cameraSpeed = 120f;
-    
-    public GameObject followTarget;
+    [Header("External Refernces")]
+    public Transform T_Player;
+    private CharacterController CC_PlayerCC;
 
-    [SerializeField] private float clampAngle = 80f;
-    [SerializeField] private float sensitivity = 150f;
+    [Header("Camera Settings")]
+    public float F_CamTurnSpeed;
+    public float F_CamDistance;
+    public float F_CamTilt;
+    public float F_CamTiltLowest;
+    public float F_CamTiltHighest;
 
-    private Vector2 rotation;
+    [Header("Stored Camera Information")]
+    public float F_DirectionItsHeading; //Este valor al llegar a 90 se coloca justo detras de Mario. Utilizar para hacer la camara opcional
 
-    private void Start()
+    [Header("Player Information")]
+    public float F_PlayerHeight;
+
+    // Start is called before the first frame update
+    void Start()
     {
-        if (followTarget == null)
-            followTarget = GameObject.FindGameObjectWithTag("Player");
-
-        rotation = transform.localRotation.eulerAngles;
-
-        // Lock the curser in the middle and hide it.
-        // Fixes issue where mouse goes out of window.
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        CC_PlayerCC = T_Player.GetComponent<CharacterController>();
+        UpdatePlayerHeight();
     }
 
-    private void Update()
+    void UpdatePlayerHeight()
     {
-        rotation.y += Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
-        rotation.x += Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
-
-        // Restrict to min and max angle (AKA no 360 movement vertically)
-        rotation.x = Mathf.Clamp(rotation.x, -clampAngle, clampAngle);
-
-        // Rotate camera
-        Quaternion localRotation = Quaternion.Euler(rotation.x, rotation.y, 0f);
-        transform.rotation = localRotation;
+        F_PlayerHeight = T_Player.localScale.y / 2;
     }
 
-    private void LateUpdate()
+    // Update is called once per frame
+    void LateUpdate()
     {
-        // Translate camera towards target.
-        transform.position = Vector3.MoveTowards(transform.position, followTarget.transform.position, cameraSpeed * Time.deltaTime);
+        F_DirectionItsHeading += Input.GetAxis("Mouse X") * Time.deltaTime * F_CamTurnSpeed; //Stores our Mouse X information for rotating the camera later 
+        F_CamTilt += Input.GetAxis("Mouse Y") * Time.deltaTime * F_CamTurnSpeed; //Modifying the tilt
+        F_CamTilt = Mathf.Clamp(F_CamTilt, F_CamTiltLowest, F_CamTiltHighest); //limited camera rotation on Y Axis
+        transform.rotation = Quaternion.Euler(F_CamTilt, F_DirectionItsHeading, 0); //Camera tilt setup
+
+        transform.position = T_Player.position - transform.forward * F_CamDistance + Vector3.up * F_PlayerHeight; //Set a Camera distance away from the player & sets the height focus point
     }
 }
