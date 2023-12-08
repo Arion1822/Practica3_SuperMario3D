@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
                 {
                     GameObject singletonObject = new GameObject("GameManager");
                     instance = singletonObject.AddComponent<GameManager>();
+                    DontDestroyOnLoad(singletonObject);
                 }
             }
             return instance;
@@ -45,8 +46,9 @@ public class GameManager : MonoBehaviour
     
     public GameObject starPrefab;
     public GameObject star;
+    private Coroutine hideCoroutine;
 
-    
+
     private void Awake()
     {
         star = starPrefab;
@@ -59,6 +61,7 @@ public class GameManager : MonoBehaviour
         
         UpdateCoinsUI();
         UpdateLifeUI();
+        UpdateOportunitiesUI();
 
     }
 
@@ -82,6 +85,20 @@ public class GameManager : MonoBehaviour
     public void UpdateCoinsUI()
     {
         coinText.SetText(coins.ToString());
+    }
+
+    public void GetStar()
+    {
+        if (life < 8)
+        {
+            life = Math.Min(life+2, 8);
+            UpdateLifeUI();
+        }
+        else
+        {
+            oportunities++;
+            UpdateOportunitiesUI();
+        }
     }
     
     public void AddLife(int amount)
@@ -113,6 +130,8 @@ public class GameManager : MonoBehaviour
 
     public void UpdateLifeUI()
     {
+        lifeImage.transform.parent.gameObject.SetActive(true);
+    
         //make lifeimage slice based on life/8 (8 is maxlife)
         //also make color of lifeimage based on life (8-7 green, 6-5 yellowish green, 4-3 yellow, 1-2 red)
         
@@ -143,6 +162,27 @@ public class GameManager : MonoBehaviour
 
         // Apply the color to the lifeImage
         lifeImage.color = lifeColor;
+        
+        if (hideCoroutine != null)
+        {
+            StopCoroutine(hideCoroutine);
+        }
+
+        // Show the lifeImage's parent for 3 seconds
+        hideCoroutine = StartCoroutine(HideLifeAfterDelay(3f));
+    }
+
+    private IEnumerator HideLifeAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        // Hide the lifeImage after the delay
+        lifeImage.transform.parent.gameObject.SetActive(false);
+    }
+    
+    void UpdateOportunitiesUI()
+    {
+        oportunitiesText.SetText(oportunities.ToString());
     }
 
     public void RemoveOportunity()
@@ -157,6 +197,9 @@ public class GameManager : MonoBehaviour
         gameOver.SetActive(true);
         RemoveOportunity();
         FillLife();
+        
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
     public void Restart()

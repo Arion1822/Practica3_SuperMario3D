@@ -48,8 +48,10 @@
      <Compile Include="Assets\Scripts\Coin.cs" />
      <Compile Include="Assets\Scripts\CameraMovement.cs" />
      <Compile Include="Assets\Scripts\CameraCollision.cs" />
+     <Compile Include="Assets\Scripts\PlatformMovement.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\Goomba.cs" />
+     <Compile Include="Assets\Scripts\Star.cs" />
      <Compile Include="Assets\Scripts\PlayerMovement.cs" />
      <Folder Include="Assets" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
@@ -780,8 +782,14 @@
      <Reference Include="Unity.TestTools.CodeCoverage.Editor.OpenCover.Model">
      <HintPath>D:\Unity Projects\Practica3_SuperMario3D\Practica3_SuperMario3D\Library\ScriptAssemblies\Unity.TestTools.CodeCoverage.Editor.OpenCover.Model.dll</HintPath>
      </Reference>
+     <Reference Include="Unity.AI.Navigation">
+     <HintPath>D:\Unity Projects\Practica3_SuperMario3D\Practica3_SuperMario3D\Library\ScriptAssemblies\Unity.AI.Navigation.dll</HintPath>
+     </Reference>
      <Reference Include="Unity.PlasticSCM.Editor">
      <HintPath>D:\Unity Projects\Practica3_SuperMario3D\Practica3_SuperMario3D\Library\ScriptAssemblies\Unity.PlasticSCM.Editor.dll</HintPath>
+     </Reference>
+     <Reference Include="Unity.AI.Navigation.Updater">
+     <HintPath>D:\Unity Projects\Practica3_SuperMario3D\Practica3_SuperMario3D\Library\ScriptAssemblies\Unity.AI.Navigation.Updater.dll</HintPath>
      </Reference>
      <Reference Include="Unity.VisualScripting.State.Editor">
      <HintPath>D:\Unity Projects\Practica3_SuperMario3D\Practica3_SuperMario3D\Library\ScriptAssemblies\Unity.VisualScripting.State.Editor.dll</HintPath>
@@ -813,11 +821,17 @@
      <Reference Include="Unity.Rider.Editor">
      <HintPath>D:\Unity Projects\Practica3_SuperMario3D\Practica3_SuperMario3D\Library\ScriptAssemblies\Unity.Rider.Editor.dll</HintPath>
      </Reference>
+     <Reference Include="Unity.AI.Navigation.Editor">
+     <HintPath>D:\Unity Projects\Practica3_SuperMario3D\Practica3_SuperMario3D\Library\ScriptAssemblies\Unity.AI.Navigation.Editor.dll</HintPath>
+     </Reference>
      <Reference Include="Unity.VisualScripting.State">
      <HintPath>D:\Unity Projects\Practica3_SuperMario3D\Practica3_SuperMario3D\Library\ScriptAssemblies\Unity.VisualScripting.State.dll</HintPath>
      </Reference>
      <Reference Include="Unity.VSCode.Editor">
      <HintPath>D:\Unity Projects\Practica3_SuperMario3D\Practica3_SuperMario3D\Library\ScriptAssemblies\Unity.VSCode.Editor.dll</HintPath>
+     </Reference>
+     <Reference Include="Unity.AI.Navigation.Editor.ConversionSystem">
+     <HintPath>D:\Unity Projects\Practica3_SuperMario3D\Practica3_SuperMario3D\Library\ScriptAssemblies\Unity.AI.Navigation.Editor.ConversionSystem.dll</HintPath>
      </Reference>
      <Reference Include="Unity.VisualScripting.Flow">
      <HintPath>D:\Unity Projects\Practica3_SuperMario3D\Practica3_SuperMario3D\Library\ScriptAssemblies\Unity.VisualScripting.Flow.dll</HintPath>
