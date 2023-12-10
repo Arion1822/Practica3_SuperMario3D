@@ -102,17 +102,20 @@ public class PlayerMovement : MonoBehaviour
             if (isGrounded)
             {
                 currentState = MarioState.Jump;
+                //animator.Play("Jump");
             }
-            /*else if (!isGrounded && jumpMomentumCheck)
+            else if (!isGrounded && jumpMomentumCheck)
             {
-                currentState = MarioState.DoubleJump;
+                animator.Play("DoubleJump");
+                
             }
             else if (!isGrounded && !jumpMomentumCheck)
             {
-                currentState = MarioState.TripleJump;
-            }*/
+               // animator.Play("TripleJump");
+              
+            }
         }
-        /*else if (Input.GetButtonDown("Punch"))
+        else if (Input.GetButtonDown("Punch"))
         {
             // Change to punch state based on input
             if (currentState == MarioState.Idle || currentState == MarioState.Walk || currentState == MarioState.Run)
@@ -127,7 +130,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 currentState = MarioState.Punch3;
             }
-        }*/
+        }
         else if (movement.magnitude > 0)
         {
             // Change to walk or run state based on movement input
