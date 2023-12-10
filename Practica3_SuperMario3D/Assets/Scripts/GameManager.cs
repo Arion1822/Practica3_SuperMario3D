@@ -5,12 +5,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 
-/// <summary>
-/// Takes care of the scoring system.
-/// 
-/// </summary>
 public class GameManager : MonoBehaviour
 {
 
@@ -22,6 +19,7 @@ public class GameManager : MonoBehaviour
         {
             if (instance == null)
             {
+                Debug.Log(FindObjectsOfType<GameManager>().ToString());
                 instance = FindObjectOfType<GameManager>();
                 if (instance == null)
                 {
@@ -35,20 +33,18 @@ public class GameManager : MonoBehaviour
     }
     
     public GameObject gameOver;
-    public int coins = 0;
     public TMP_Text coinText;
 
-    public int life = 6;
     public Image lifeImage;
 
-    public int oportunities = 3;
     public TMP_Text oportunitiesText;
     
     public GameObject starPrefab;
     public GameObject star;
     private Coroutine hideCoroutine;
 
-
+    public GameObject checkpoints;
+    public GameObject player;
     private void Awake()
     {
         star = starPrefab;
@@ -56,47 +52,51 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     { 
-        coins = 0;
-        life = 8;
+        Info.coins = 0;
+        Info.life = 8;
         
         UpdateCoinsUI();
         UpdateLifeUI();
         UpdateOportunitiesUI();
 
-    }
+        if (Info.checkpoint >= 0)
+        {
+            player.transform.position = checkpoints.transform.GetChild(Info.checkpoint).transform.position;
+        }
 
+    }
     public void AddCoins(int amount)
     {
-        coins += amount;
+        Info.coins += amount;
         
         UpdateCoinsUI();
     }
 
     public void RemoveCoins(int amount)
     {
-        coins -= amount;
+        Info.coins -= amount;
 
-        if (coins < 0)
-            coins = 0;
+        if (Info.coins < 0)
+            Info.coins = 0;
         
         UpdateCoinsUI();
     }
 
     public void UpdateCoinsUI()
     {
-        coinText.SetText(coins.ToString());
+        coinText.SetText(Info.coins.ToString());
     }
 
     public void GetStar()
     {
-        if (life < 8)
+        if (Info.life < 8)
         {
-            life = Math.Min(life+2, 8);
+            Info.life = Math.Min(Info.life+2, 8);
             UpdateLifeUI();
         }
         else
         {
-            oportunities++;
+            Info.oportunities++;
             UpdateOportunitiesUI();
         }
     }
@@ -104,18 +104,18 @@ public class GameManager : MonoBehaviour
     public void AddLife(int amount)
     {
         
-        life += amount;
-        if (life > 6) life = 6;
+        Info.life += amount;
+        if (Info.life > 6) Info.life = 6;
         
         UpdateLifeUI();
     }
 
     public void RemoveLife(int amount)
     {
-        life -= amount;
-        if (life <= 0)
+        Info.life -= amount;
+        if (Info.life <= 0)
         {
-            life = 0;
+            Info.life = 0;
             Die();
         }
         
@@ -124,7 +124,7 @@ public class GameManager : MonoBehaviour
     
     public void FillLife()
     {
-        life = 8;
+        Info.life = 8;
         UpdateLifeUI();
     }
 
@@ -136,22 +136,22 @@ public class GameManager : MonoBehaviour
         //also make color of lifeimage based on life (8-7 green, 6-5 yellowish green, 4-3 yellow, 1-2 red)
         
         // Calculate the fill amount based on the current life
-        float fillAmount = life / 8f; // Assuming max life is 6
+        float fillAmount = Info.life / 8f; // Assuming max life is 6
 
         // Update the fill amount of the lifeImage
         lifeImage.fillAmount = fillAmount;
 
         // Set color based on life range
         Color lifeColor;
-        if (life >= 7)
+        if (Info.life >= 7)
         {
             lifeColor = Color.blue;
         }
-        else if (life >= 5)
+        else if (Info.life >= 5)
         {
             lifeColor = Color.green;
         }
-        else if (life >= 3)
+        else if (Info.life >= 3)
         {
             lifeColor = Color.yellow;
         }
@@ -182,13 +182,13 @@ public class GameManager : MonoBehaviour
     
     void UpdateOportunitiesUI()
     {
-        oportunitiesText.SetText(oportunities.ToString());
+        oportunitiesText.SetText(Info.oportunities.ToString());
     }
 
     public void RemoveOportunity()
     {
-        oportunities -= 1;
-        oportunitiesText.SetText(oportunities.ToString());
+        Info.oportunities -= 1;
+        oportunitiesText.SetText(Info.oportunities.ToString());
         
     }
 
@@ -215,5 +215,10 @@ public class GameManager : MonoBehaviour
         starPos.y += 3f;
 
         Instantiate(star, starPos, player.rotation);
+    }
+
+    public void UpdateCheckpoint(GameObject checkpoint)
+    {
+        Info.checkpoint = checkpoint.transform.GetSiblingIndex();
     }
 }

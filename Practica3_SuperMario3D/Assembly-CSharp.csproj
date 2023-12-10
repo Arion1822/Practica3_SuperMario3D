@@ -47,9 +47,14 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\Coin.cs" />
      <Compile Include="Assets\Scripts\CameraMovement.cs" />
+     <Compile Include="Assets\Scripts\Lava.cs" />
      <Compile Include="Assets\Scripts\CameraCollision.cs" />
+     <Compile Include="Assets\Scripts\Seesaw.cs" />
+     <Compile Include="Assets\Scripts\GoombaDie.cs" />
      <Compile Include="Assets\Scripts\PlatformMovement.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
+     <Compile Include="Assets\Scripts\Info.cs" />
+     <Compile Include="Assets\Scripts\Checkpoint.cs" />
      <Compile Include="Assets\Scripts\Goomba.cs" />
      <Compile Include="Assets\Scripts\Star.cs" />
      <Compile Include="Assets\Scripts\PlayerMovement.cs" />
@@ -60,11 +65,14 @@
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <Folder Include="Assets\TextMesh Pro\Sprites" />
      <Folder Include="Assets\Mario Assets\Models\Textures\Mario" />
+     <Folder Include="Assets\Mario Assets\Models\Mesh fbx\Wii U - Super Mario 3D World - Checkpoint Flag" />
      <Folder Include="Assets\TextMesh Pro\Resources\Sprite Assets" />
+     <Folder Include="Assets\Animations" />
      <Folder Include="Assets\Mario Assets\Models\Shaders" />
      <Folder Include="Assets\Mario Assets\Models\Materials\Effects" />
      <Folder Include="Assets\Mario Assets\Models\UI\Numbers Font" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
+     <Folder Include="Assets\Mario Assets\Models\Mesh fbx\Wii U - Super Mario 3D World - Checkpoint Flag\CheckpointFlag" />
      <Folder Include="Assets\Mario Assets\Sound\Effects" />
      <Folder Include="Assets\TextMesh Pro\Resources\Fonts &amp; Materials" />
      <Folder Include="Assets\Mario Assets\Models\Textures\Interactive" />
@@ -77,6 +85,7 @@
      <Folder Include="Assets\Mario Assets\Sound\Music" />
      <Folder Include="Assets\Mario Assets\Sound\Interactive" />
      <Folder Include="Assets\Scenes" />
+     <Folder Include="Assets\Prefabs\Materials" />
      <Folder Include="Assets\Mario Assets\Sound\MarioEffects" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
      <Folder Include="Assets\Mario Assets\Models\Textures\CubeMaps" />
@@ -97,6 +106,7 @@
      <Folder Include="Assets\Mario Assets\Models\Textures\Effects\Shadows\Materials" />
      <Folder Include="Assets\Mario Assets\Map\Materials" />
      <Folder Include="Assets\Mario Assets\Sound\Doodads" />
+     <Folder Include="Assets\Scenes\Practica3_SuperMario3D" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
      <Folder Include="Assets\TextMesh Pro\Shaders" />
      <Folder Include="Assets\Mario Assets\Models\Textures\Effects" />
@@ -827,11 +837,11 @@
      <Reference Include="Unity.VisualScripting.State">
      <HintPath>D:\Unity Projects\Practica3_SuperMario3D\Practica3_SuperMario3D\Library\ScriptAssemblies\Unity.VisualScripting.State.dll</HintPath>
      </Reference>
-     <Reference Include="Unity.VSCode.Editor">
-     <HintPath>D:\Unity Projects\Practica3_SuperMario3D\Practica3_SuperMario3D\Library\ScriptAssemblies\Unity.VSCode.Editor.dll</HintPath>
-     </Reference>
      <Reference Include="Unity.AI.Navigation.Editor.ConversionSystem">
      <HintPath>D:\Unity Projects\Practica3_SuperMario3D\Practica3_SuperMario3D\Library\ScriptAssemblies\Unity.AI.Navigation.Editor.ConversionSystem.dll</HintPath>
+     </Reference>
+     <Reference Include="Unity.VSCode.Editor">
+     <HintPath>D:\Unity Projects\Practica3_SuperMario3D\Practica3_SuperMario3D\Library\ScriptAssemblies\Unity.VSCode.Editor.dll</HintPath>
      </Reference>
      <Reference Include="Unity.VisualScripting.Flow">
      <HintPath>D:\Unity Projects\Practica3_SuperMario3D\Practica3_SuperMario3D\Library\ScriptAssemblies\Unity.VisualScripting.Flow.dll</HintPath>

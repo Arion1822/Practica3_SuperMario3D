@@ -21,6 +21,10 @@ public class CameraMovement : MonoBehaviour
 
     [Header("Player Information")]
     public float F_PlayerHeight;
+    
+    public float F_IdleRepositionTime = 5f; // Time to wait before repositioning
+    private float idleTimer;
+
 
     // Start is called before the first frame update
     void Start()
@@ -39,11 +43,41 @@ public class CameraMovement : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        F_DirectionItsHeading += Input.GetAxis("Mouse X") * Time.deltaTime * F_CamTurnSpeed; //Stores our Mouse X information for rotating the camera later 
-        F_CamTilt += Input.GetAxis("Mouse Y") * Time.deltaTime * F_CamTurnSpeed; //Modifying the tilt
-        F_CamTilt = Mathf.Clamp(F_CamTilt, F_CamTiltLowest, F_CamTiltHighest); //limited camera rotation on Y Axis
-        transform.rotation = Quaternion.Euler(F_CamTilt, F_DirectionItsHeading, 0); //Camera tilt setup
+        
+        idleTimer += Time.deltaTime;
 
-        transform.position = T_Player.position - transform.forward * F_CamDistance + Vector3.up * F_PlayerHeight; //Set a Camera distance away from the player & sets the height focus point
+        F_DirectionItsHeading += Input.GetAxis("Mouse X") * Time.deltaTime * F_CamTurnSpeed; // Stores our Mouse X information for rotating the camera later 
+        F_CamTilt += Input.GetAxis("Mouse Y") * Time.deltaTime * F_CamTurnSpeed; // Modifying the tilt
+        F_CamTilt = Mathf.Clamp(F_CamTilt, F_CamTiltLowest, F_CamTiltHighest); // Limited camera rotation on Y Axis
+        transform.rotation = Quaternion.Euler(F_CamTilt, F_DirectionItsHeading, 0); // Camera tilt setup
+
+        transform.position = T_Player.position - transform.forward * F_CamDistance + Vector3.up * F_PlayerHeight; // Set a Camera distance away from the player & sets the height focus point
+
+        // Check if there is any movement or camera rotation
+        if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0 || Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)
+        {
+            // Reset the idle timer
+            idleTimer = 0f;
+        }
+
+        // Reposition the camera if it's idle for a certain time
+        if (idleTimer >= F_IdleRepositionTime)
+        {
+            // Reset the camera position behind Mario
+            RepositionCameraBehindPlayer();
+        }
+    }
+    
+    void RepositionCameraBehindPlayer()
+    {
+        // Reset the camera position behind Mario
+        float newYRotation = T_Player.eulerAngles.y;
+        transform.position = T_Player.position + Quaternion.Euler(0, newYRotation, 0) * Vector3.back * F_CamDistance + Vector3.up * F_PlayerHeight;
+
+        // Recalculate F_DirectionItsHeading based on the new camera position
+        F_DirectionItsHeading = newYRotation + 180;
+
+        // Reset the camera rotation
+        transform.rotation = Quaternion.Euler(F_CamTiltLowest, F_DirectionItsHeading, 0);
     }
 }

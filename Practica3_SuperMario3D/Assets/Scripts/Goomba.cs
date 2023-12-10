@@ -104,6 +104,11 @@ public class Goomba : MonoBehaviour
             timeToLoseAlert = 5f;
         }
     }
+
+    public void Die()
+    {
+        Destroy(gameObject);
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag.Equals("Player"))
