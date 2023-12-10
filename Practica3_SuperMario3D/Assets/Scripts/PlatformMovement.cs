@@ -36,4 +36,16 @@ public class PlatformMovement : MonoBehaviour
         platform.transform.position = Vector3.MoveTowards(platform.transform.position, waypoints[waypointsIndex].transform.position, platformSpeed * Time.deltaTime);
         
     }
+    private void OnCollisionEnter (Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player")){
+            collision.gameObject.transform.SetParent(platform.transform);
+        }
+    }
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player")){
+            collision.gameObject.transform.SetParent(null);
+        }
+    }
 }

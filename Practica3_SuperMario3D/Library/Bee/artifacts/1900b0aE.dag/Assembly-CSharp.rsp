@@ -363,6 +363,7 @@
 "Assets/Scripts/Goomba.cs"
 "Assets/Scripts/PlatformMovement.cs"
 "Assets/Scripts/PlayerMovement.cs"
+"Assets/Scripts/Seesaw.cs"
 "Assets/Scripts/Star.cs"
 -langversion:9.0
 

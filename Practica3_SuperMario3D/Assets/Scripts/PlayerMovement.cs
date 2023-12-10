@@ -21,12 +21,15 @@ public class PlayerMovement : MonoBehaviour
     public bool isGrounded { get; private set; }
     public bool jumpMomentumCheck { get; private set; }
 
+    [SerializeField] private Animator animator;
+
   //  [Header("Audio")]
   //  [SerializeField] private AudioSource audioSource;
 
     private void Awake()
     {
-       // audioSource = GetComponent<AudioSource>();
+        animator = GetComponent<Animator>();
+        // audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -96,6 +99,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetButton("Jump") && isGrounded)
         {
             gravitationalForce.y = Mathf.Sqrt(-2 * jumpHeight * gravity);
+            animator.Play("Jump", - 1, 0f);
         }
         // move mario
         controller.Move((movement * speed * Time.deltaTime) + (gravitationalForce * Time.deltaTime));
